@@ -1,7 +1,3 @@
-
-
-import 'package:flutter/services.dart';
-
 import 'handheld_terminal_pda_platform_interface.dart';
 
 class HandheldTerminalPda {
