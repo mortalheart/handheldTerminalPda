@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import android.view.KeyEvent
 import com.example.handheld_terminal_pda.IScannerManager
 import com.example.handheld_terminal_pda.SupporterAssembly
@@ -24,9 +23,6 @@ class IDataScannerManager private constructor(context: Context) : IScannerManage
                 // String myType = String.format("%c", type);
                 // 获取扫描结果
                 val scanResult: String? = intent.getStringExtra("value")
-                if (scanResult != null) {
-                    Log.e("TAG", scanResult)
-                }
                 if (scanResult != null) {
                     if (scanResult.isNotEmpty()) {
                         listener?.onScannerResultChange(scanResult)
@@ -85,8 +81,6 @@ class IDataScannerManager private constructor(context: Context) : IScannerManage
     override fun setScanMode(mode: String?) {}
     override fun setDataTransferType(type: String?) {}
     override fun singleScan(bool: Boolean) {
-        Log.e("TAG", "singleScan: $bool")
-        Log.e("mScanner", "singleScan: $mScanner")
         if (bool) {
             mScanner?.scanStart()
         } else {

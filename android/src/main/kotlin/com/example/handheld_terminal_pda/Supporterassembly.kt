@@ -13,6 +13,7 @@ class SupporterAssembly<T : IScannerManager>( val context: Context, private val 
         PDA("PDA"), AUTOID("AUTOID"), KU8905("KU-8905"),
         JieNaoHT380K("HT380K"),SUNMI("SUNMI"),SEUIC("SEUIC"),
         UBX("UBX"),SG6900("SG6900"),ALPS("alps"), IDATA("idata"),
+        NFC("NFC");
     }
 
     private fun getSupporter(): ScannerSupporter {
@@ -25,7 +26,7 @@ class SupporterAssembly<T : IScannerManager>( val context: Context, private val 
         return try {
             ScannerSupporter.valueOf(getSupporter().title)
         } catch (e: Exception) {
-            ScannerSupporter.PDA
+            ScannerSupporter.NFC
         }
     }
 
@@ -41,6 +42,7 @@ class SupporterAssembly<T : IScannerManager>( val context: Context, private val 
             ScannerSupporter.SG6900 -> THCANSG6900ScannerManager.getInstance(context) as? T
             ScannerSupporter.ALPS -> AlpsScannerManager.getInstance(context) as? T
             ScannerSupporter.IDATA -> IDataScannerManager.getInstance(context) as? T
+            ScannerSupporter.NFC -> NFCScannerManager.getInstance(context) as? T
         } ?: throw IllegalStateException("无法初始化扫描程序管理器")
          scannerManager.apply {
              setScannerListener(iScanListener)

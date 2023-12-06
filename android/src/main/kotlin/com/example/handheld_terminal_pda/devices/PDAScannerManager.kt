@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.device.ScanDevice
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.KeyEvent
 import com.example.handheld_terminal_pda.IScannerManager
 import com.example.handheld_terminal_pda.SupporterAssembly
@@ -59,7 +58,6 @@ class PDAScannerManager private constructor(private val mContext: Context) : ISc
     override fun continuousScan(bool: Boolean) {
         mScanDevice!!.scanLaserMode = 4
         mScanDevice!!.startScan()
-        Log.e("获取当前连接状态", "continuousScan: " + mScanDevice!!.scanLaserMode)
     }
 
     override fun findingCards(num: Int) {}

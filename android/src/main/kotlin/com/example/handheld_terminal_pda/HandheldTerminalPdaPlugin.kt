@@ -1,7 +1,6 @@
 package com.example.handheld_terminal_pda
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -32,11 +31,9 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
       "PDA" -> {
         if (Build.MANUFACTURER == "Google"){
            vendorsAreNotSupported = false
-          result.success("厂商通道不支持 " + Build.MANUFACTURER)
+          result.success("不支持")
         } else {
           initScanner()
-          result.success("型号" + Build.MODEL + "，厂商" + Build.MANUFACTURER)
-          Log.e("TAG", "型号" + Build.MODEL + "，厂商" + Build.MANUFACTURER);
         }
       }
       "singleScan" -> handleSingleScan(result)
@@ -49,7 +46,6 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun handleSendData(list: List<*>, result: MethodChannel.Result) {
-    Log.d("接收发送的数据", "handleSendData: $list")
   }
 
   private fun initScanner() {
@@ -60,13 +56,13 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
           // 当有新的结果时，去重并返回给Flutter端
           sendUniqueScanResultsToFlutter()
         }
-
+// 初始化成功
         override fun onScannerServiceConnected() {
-          Log.e("\n", "初始化成功")
-        }
 
+        }
+//        初始化失败
         override fun onScannerInitFail() {
-          Log.e("\n", "无法获取扫描头")
+
         }
       })
     }
@@ -74,7 +70,6 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
 
   private fun sendUniqueScanResultsToFlutter() {
     val uniqueResults: List<String> = ArrayList(scanResults) // 转换为List去重
-    Log.d("返回结果:", uniqueResults.toString())
     channel.invokeMethod("onUniqueScanResults", uniqueResults)
   }
 
@@ -84,10 +79,10 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
     // 当有新的结果时，去重并返回给Flutter端
     if (::mScannerManager.isInitialized && vendorsAreNotSupported) {
       mScannerManager.singleScan(true)
-    val uniqueResults: List<String> = ArrayList(scanResults) // 转换为List去重
+      val uniqueResults: List<String> = ArrayList(scanResults) // 转换为List去重
       result.success(uniqueResults.toString())
     } else {
-      result.error("SCANNER_NOT_INITIALIZED", "Scanner not initialized", null)
+      result.success("单次扫描失败")
     }
   }
 
@@ -98,7 +93,7 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
       val uniqueResults: List<String> = ArrayList(scanResults) // 转换为List去重
       result.success(uniqueResults.toString())
     } else {
-      result.error("SCANNER_NOT_INITIALIZED", "Scanner not initialized", null)
+      result.success("连续扫描失败")
     }
   }
 
@@ -107,7 +102,7 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
       mScannerManager.recycle()
       result.success("Prepare to write data")
     } else {
-      result.error("SCANNER_NOT_INITIALIZED", "Scanner not initialized", null)
+      result.success("重置失败")
     }
   }
 
@@ -118,7 +113,7 @@ open class HandheldTerminalPdaPlugin : FlutterPlugin, MethodCallHandler {
       result.success(uniqueResults.toString())
 //      result.success("Scan is off")
     } else {
-      result.error("SCANNER_NOT_INITIALIZED", "Scanner not initialized", null)
+      result.success("修改失败")
     }
   }
 

@@ -12,9 +12,6 @@ import com.example.handheld_terminal_pda.utils.BaseUtil
 import com.seuic.uhf.EPC
 import com.seuic.uhf.IReadTagsListener
 import com.seuic.uhf.UHFService
-import java.util.*
-import kotlin.math.log
-
 
 class RFIDScannerManager private constructor(activity: Context) : IScannerManager {
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -112,8 +109,6 @@ class RFIDScannerManager private constructor(activity: Context) : IScannerManage
                 println("oldEpcID: $oldEpcID")
                 println("newEpcID: $newEpcID")
                 val psw = "00000000"
-                //                00000000000000000000000000000000
-//                int len = newEpcID.length();
                 writeTagData( //标签ID，16进制字符串，使用获取标签的接口取得
                     BaseUtil.stringToHexByteArray(oldEpcID as String),  //密码，16进制字符串
                     BaseUtil.stringToHexByteArray(psw),  //标签的存储区（0：密码区 1：EPC区 2：TI区 3：用户区）
